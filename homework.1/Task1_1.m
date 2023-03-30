@@ -1,40 +1,40 @@
 clear all;
 clc;
-Time=10;%%·ÂÕæÊ±¼ä£¬s
-dt=0.01;%%·ÂÕæ²½³¤£¬s
-%% ³£Á¿²ÎÊı
-P=5884;   %%ÍÆÁ¦£¬N
-rou=1.225;   %%ÃÜ¶È£¬kg/m3
-S=4.72;   %%²Î¿¼Ãæ»ı,m2
-L=2.33;  %%²Î¿¼³¤¶È,m
-Jz=4200; %%×ª¶¯¹ßÁ¿£¬kg*m2
-Isp=2097;   %%±È³å£¬N*s/kg
-g=9.8;   %%ÖØÁ¦¼ÓËÙ¶È£¬m/s2
-a=340;   %%ÉùËÙ£¬m/s
-%% ×´Ì¬±äÁ¿
-V=zeros(1,Time/dt);%%m/s£¬ËÙ¶È
-theta=zeros(1,Time/dt);   %%rad£¬µ¯µÀÇã½Ç
-wz=zeros(1,Time/dt);%rad/s£¬¸©Ñö½ÇËÙ¶È
-op_theta=zeros(1,Time/dt);   %%rad£¬¸©Ñö½Ç
-x=zeros(1,Time/dt);   %%m£¬Ë®Æ½Î»ÖÃ
-y=zeros(1,Time/dt);  %%m£¬¸ß¶È
+Time=10;%%ä»¿çœŸæ—¶é—´ï¼Œs
+dt=0.001;%%ä»¿çœŸæ­¥é•¿ï¼Œs
+%% å¸¸é‡å‚æ•°
+P=5884;   %%æ¨åŠ›ï¼ŒN
+rou=1.225;   %%å¯†åº¦ï¼Œkg/m3
+S=4.72;   %%å‚è€ƒé¢ç§¯,m2
+L=2.33;  %%å‚è€ƒé•¿åº¦,m
+Jz=4200; %%è½¬åŠ¨æƒ¯é‡ï¼Œkg*m2
+Isp=2097;   %%æ¯”å†²ï¼ŒN*s/kg
+g=9.8;   %%é‡åŠ›åŠ é€Ÿåº¦ï¼Œm/s2
+a=340;   %%å£°é€Ÿï¼Œm/s
+%% çŠ¶æ€å˜é‡
+V=zeros(1,Time/dt);%%m/sï¼Œé€Ÿåº¦
+theta=zeros(1,Time/dt);   %%radï¼Œå¼¹é“å€¾è§’
+wz=zeros(1,Time/dt);%rad/sï¼Œä¿¯ä»°è§’é€Ÿåº¦
+op_theta=zeros(1,Time/dt);   %%radï¼Œä¿¯ä»°è§’
+x=zeros(1,Time/dt);   %%mï¼Œæ°´å¹³ä½ç½®
+y=zeros(1,Time/dt);  %%mï¼Œé«˜åº¦
 m=zeros(1,Time/dt);   %%kg
-alpha=zeros(1,Time/dt);   %%rad£¬¹¥½Ç
-%%  ²åÖµÔËËã
+alpha=zeros(1,Time/dt);   %%radï¼Œæ”»è§’
+%%  æ’å€¼è¿ç®—
 Array_alpha=[-2 0 2 4 8]*pi/180;
 Array_Cx=[0.02181 0.01961 0.02181 0.02903 0.06310];
 Array_Cyalpha=[-0.0666 0 0.0670 0.1479 0.3540];
 Array_mzalpha=[0.00524 0.00027 -0.00622 -0.02044 -0.07159];
 KCx=polyfit(Array_alpha,Array_Cx,3);
 KCyalpha=polyfit(Array_alpha,Array_Cyalpha,3);
-Cydeltaz=0.00455;%Ã¿»¡¶ÈÒıÆğµÄÉıÁ¦ÏµÊı±ä»¯
+Cydeltaz=0.00455;%æ¯å¼§åº¦å¼•èµ·çš„å‡åŠ›ç³»æ•°å˜åŒ–
 Kmzalpha=polyfit(Array_alpha,Array_mzalpha,3);
-mzdeltaz=-0.0068;%Ã¿»¡¶ÈÒıÆğµÄ¸©ÑöÁ¦¾ØÏµÊı±ä»¯
+mzdeltaz=-0.0068;%æ¯å¼§åº¦å¼•èµ·çš„ä¿¯ä»°åŠ›çŸ©ç³»æ•°å˜åŒ–
 %%
 Array_deltaz=[-3,-1,0,1,3];
 for i=1:5
     deltaz=Array_deltaz(i);
-    %% ×´Ì¬±äÁ¿³õÊ¼Öµ
+    %% çŠ¶æ€å˜é‡åˆå§‹å€¼
     V(1)=0.9*a;
     theta(1)=0;   %%rad
     wz(1)=0;%rad/s
@@ -44,7 +44,7 @@ for i=1:5
     m(1)=2000;   %%kg
     alpha(1)=3*pi/180;   %%rad
     for k=1:Time/dt
-     %% ¶¯Ì¬·½³Ì
+     %% åŠ¨æ€æ–¹ç¨‹
         %%%
         q(k)=rou*V(k)^2/2;
         Cx(k)=polyval(KCx,alpha(k));
@@ -78,21 +78,21 @@ for i=1:5
         %%%
         alpha(k+1)=op_theta(k+1)-theta(k+1);
     end
-    %% ×÷Í¼
+    %% ä½œå›¾
     z=(0:Time/dt)*0.001;
     if i==1
-        figure(1)%¹¥½Ç
+        figure(1)%æ”»è§’
         alpha=alpha*180/pi;
         plot(z,alpha);hold on;
-        figure(2)%¹ì¼£
+        figure(2)%è½¨è¿¹
         plot(z,y);hold on
-        figure(3)%¸©Ñö½Ç
+        figure(3)%ä¿¯ä»°è§’
         op_theta=op_theta*180/pi;
         plot(z,op_theta);hold on;
-        figure(4)%¸©Ñö½ÇËÙ¶È
+        figure(4)%ä¿¯ä»°è§’é€Ÿåº¦
         wz=wz*180/pi;
         plot(z,wz);hold on;
-        figure(5)%µ¯µÀÇã½Ç
+        figure(5)%å¼¹é“å€¾è§’
         theta=theta*180/pi;
         plot(z,theta);hold on;
     elseif i== 2
@@ -101,13 +101,13 @@ for i=1:5
         plot(z,alpha);hold on;
         figure(2)
         plot(z,y);hold on
-        figure(3)%¸©Ñö½Ç
+        figure(3)%ä¿¯ä»°è§’
         op_theta=op_theta*180/pi;
         plot(z,op_theta);hold on;
-        figure(4)%¸©Ñö½Ç½ÇËÙ¶È
+        figure(4)%ä¿¯ä»°è§’è§’é€Ÿåº¦
         wz=wz*180/pi;
         plot(z,wz);hold on;
-        figure(5)%µ¯µÀÇã½Ç
+        figure(5)%å¼¹é“å€¾è§’
         theta=theta*180/pi;
         plot(z,theta);hold on;
     elseif i==3
@@ -116,13 +116,13 @@ for i=1:5
         plot(z,alpha);hold on;
         figure(2)
         plot(z,y);hold on
-        figure(3)%¸©Ñö½Ç
+        figure(3)%ä¿¯ä»°è§’
         op_theta=op_theta*180/pi;
         plot(z,op_theta);hold on;
-        figure(4)%¸©Ñö½Ç½ÇËÙ¶È
+        figure(4)%ä¿¯ä»°è§’è§’é€Ÿåº¦
         wz=wz*180/pi;
         plot(z,wz);hold on;
-        figure(5)%µ¯µÀÇã½Ç
+        figure(5)%å¼¹é“å€¾è§’
         theta=theta*180/pi;
         plot(z,theta);hold on;
     elseif i==4
@@ -131,45 +131,45 @@ for i=1:5
         plot(z,alpha);hold on;
         figure(2)
         plot(z,y);hold on
-        figure(3)%¸©Ñö½Ç
+        figure(3)%ä¿¯ä»°è§’
         op_theta=op_theta*180/pi;
         plot(z,op_theta);hold on;
-        figure(4)%¸©Ñö½Ç½ÇËÙ¶È
+        figure(4)%ä¿¯ä»°è§’è§’é€Ÿåº¦
         wz=wz*180/pi;
         plot(z,wz);hold on;
-        figure(5)%µ¯µÀÇã½Ç
+        figure(5)%å¼¹é“å€¾è§’
         theta=theta*180/pi;
         plot(z,theta);hold on;
     elseif i==5
         figure(1)
         alpha=alpha*180/pi;
         plot(z,alpha);hold on;
-        legend('deltaz=-3¡ã','deltaz=-1¡ã','deltaz=0¡ã','deltaz=1¡ã','deltaz=3¡ã')
-%         title('¹¥½Ç');
-        xlabel('Ê±¼ä/s')
-        ylabel('¹¥½Ç/deg')
+        legend('deltaz=-3Â°','deltaz=-1Â°','deltaz=0Â°','deltaz=1Â°','deltaz=3Â°')
+%         title('æ”»è§’');
+        xlabel('æ—¶é—´/s')
+        ylabel('æ”»è§’/deg')
         figure(2)
         plot(z,y);hold on
-        legend('deltaz=-3¡ã','deltaz=-1¡ã','deltaz=0¡ã','deltaz=1¡ã','deltaz=3¡ã')
-        xlabel('Ê±¼ä/s')
-        ylabel('¸ß¶È/m')
-        figure(3)%¸©Ñö½Ç
+        legend('deltaz=-3Â°','deltaz=-1Â°','deltaz=0Â°','deltaz=1Â°','deltaz=3Â°')
+        xlabel('æ—¶é—´/s')
+        ylabel('é«˜åº¦/m')
+        figure(3)%ä¿¯ä»°è§’
         op_theta=op_theta*180/pi;
         plot(z,op_theta);hold on;
-        legend('deltaz=-3¡ã','deltaz=-1¡ã','deltaz=0¡ã','deltaz=1¡ã','deltaz=3¡ã')
-        xlabel('Ê±¼ä/s')
-        ylabel('¸©Ñö½Ç/deg')
-        figure(4)%¸©Ñö½Ç½ÇËÙ¶È
+        legend('deltaz=-3Â°','deltaz=-1Â°','deltaz=0Â°','deltaz=1Â°','deltaz=3Â°')
+        xlabel('æ—¶é—´/s')
+        ylabel('ä¿¯ä»°è§’/deg')
+        figure(4)%ä¿¯ä»°è§’è§’é€Ÿåº¦
         wz=wz*180/pi;
         plot(z,wz);hold on;
-        legend('deltaz=-3¡ã','deltaz=-1¡ã','deltaz=0¡ã','deltaz=1¡ã','deltaz=3¡ã')
-        xlabel('Ê±¼ä/s')
-        ylabel('¸©Ñö½Ç½ÇËÙ¶È/deg/s')
-        figure(5)%µ¯µÀÇã½Ç
+        legend('deltaz=-3Â°','deltaz=-1Â°','deltaz=0Â°','deltaz=1Â°','deltaz=3Â°')
+        xlabel('æ—¶é—´/s')
+        ylabel('ä¿¯ä»°è§’è§’é€Ÿåº¦/deg/s')
+        figure(5)%å¼¹é“å€¾è§’
         theta=theta*180/pi;
         plot(z,theta);hold on;
-        legend('deltaz=-3¡ã','deltaz=-1¡ã','deltaz=0¡ã','deltaz=1¡ã','deltaz=3¡ã')
-        xlabel('Ê±¼ä/s')
-        ylabel('µ¯µÀÇã½Ç/deg')
+        legend('deltaz=-3Â°','deltaz=-1Â°','deltaz=0Â°','deltaz=1Â°','deltaz=3Â°')
+        xlabel('æ—¶é—´/s')
+        ylabel('å¼¹é“å€¾è§’/deg')
     end
 end
